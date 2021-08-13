@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@300&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+	<div class="container">
+		
+	</div>	
+  <div class="modal" id="modalBox">
+	  <div class="modal-container">
+			<div class="big-image">
+				<img src="https://rickandmortyapi.com/api/character/avatar/2.jpeg" class="single-image" alt="">
+	  	</div>
+	  	<div class="profile">
+				<div>
+					<h3  >
+						name :
+					</h3>
+					<p class="name">
+						Rick Sanchez
+					</p>
+				</div>
+				<div>
+					<h3>
+						status :
+					</h3>
+					<p class="status">
+						Alive
+					</p>
+				</div>
+				<div>
+					<h3>
+						gender :
+					</h3>
+					<p class="gender">
+						Male
+					</p>
+				</div>
+			</div>
+	  </div>
+  </div>
+
+	<script>
+
+		const modal = document.querySelector('.modal');
+		const container = document.querySelector('.container');
+		const modalBox = document.querySelector("#modalBox")
+
+		let info ;
+		fetch('https://rickandmortyapi.com/api/character')
+  .then(response => response.json())
+  .then(json => {
+		info = json.results;
+		console.log(info);
+		populateData (info, container)
+	});
+
+ function	populateData (photos, container) {
+	 container.innerHTML = photos.map((photo, i) => {
+		 return `<div class="box">
+			<div class="image" onclick="openModal('${photo.image}', '${photo.name}', '${photo.status}','${photo.gender}')">
+				<img src="${photo.image}"  alt="">
+			</div>
+			<div>
+				<p>
+					${photo.name}
+				</p>
+			</div>
+		</div>
+		 `
+	 })
+	}
+
+	function openModal (image, name, status, gender) {
+	 	modal.classList.toggle('modalblock');
+	  	const imageElement = document.querySelector(".single-image")
+		const nameElement = document.querySelector(".name");
+		const genderElement = document.querySelector(".gender");
+		const statusElement = document.querySelector(".status")
+     	 imageElement.src = image 
+		nameElement.innerHTML = name;
+		statusElement.innerHTML = status;
+		genderElement.innerHTML = gender;
+	}
+
+		function closeModal (photo) {
+	  modal.classList.toggle('modalblock');
+		console.log(photo)
+		}
+
+	// image.addEventListener( 'click', toggleModal);
+		modal.addEventListener ('click', closeModal);
+	</script>
+</body>
+</html>
